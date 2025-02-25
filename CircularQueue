@@ -1,0 +1,92 @@
+class CircularQueue {
+    private int[] queue;
+    private int front, rear, size, capacity;
+
+    public CircularQueue(int capacity) {
+        this.capacity = capacity;
+        this.queue = new int[capacity];
+        this.front = this.size = 0;  // Front starts at index 0
+        this.rear = capacity - 1;    // Rear starts at the last index
+    }
+
+    // Enqueue an element to the rear
+    public boolean enqueue(int item) {
+        if (isFull()) {
+            System.out.println("Queue is full!");
+            return false;
+        }
+        rear = (rear + 1) % capacity;
+        queue[rear] = item;
+        size++;
+        return true;
+    }
+
+    // Dequeue an element from the front
+    public int dequeue() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty!");
+            return -1;
+        }
+        int item = queue[front];
+        front = (front + 1) % capacity;
+        size--;
+        return item;
+    }
+
+    // Get the front element
+    public int getFront() {
+        if (isEmpty()) return -1;
+        return queue[front];
+    }
+
+    // Get the rear element
+    public int getRear() {
+        if (isEmpty()) return -1;
+        return queue[rear];
+    }
+
+    // Check if the queue is empty
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // Check if the queue is full
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    // Display the queue
+    public void display() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty!");
+            return;
+        }
+        System.out.print("Circular Queue: ");
+        for (int i = 0; i < size; i++) {
+            System.out.print(queue[(front + i) % capacity] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        CircularQueue cq = new CircularQueue(5);
+
+        cq.enqueue(10);
+        cq.enqueue(20);
+        cq.enqueue(30);
+        cq.enqueue(40);
+        cq.enqueue(50);
+        cq.display();  // Output: Circular Queue: 10 20 30 40 50
+
+        cq.dequeue();
+        cq.dequeue();
+        cq.display();  // Output: Circular Queue: 30 40 50
+
+        System.out.println("Front: " + cq.getFront()); // Output: 30
+        System.out.println("Rear: " + cq.getRear());   // Output: 50
+
+        cq.enqueue(60);
+        cq.enqueue(70);
+        cq.display();  // Output: Circular Queue: 30 40 50 60 70
+    }
+}
